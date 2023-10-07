@@ -10,8 +10,15 @@ struct IEEE754_single {
     uint32_t sign : 1;      // 1 bit for the sign
 };
 
+struct IEEE754_half {
+    uint16_t mantissa : 10; // 10 bits for the mantissa
+    uint16_t exponent : 5;  // 5 bits for the exponent
+    uint16_t sign : 1;      // 1 bit for the sign
+};
+
 // Function to round a floating-point number to the nearest integer
-int round_to_nearest_integer(float x) {
+int round_to_nearest_integer(float x)
+{
 
     // Create a union for IEEE 754 single-precision floating-point numbers
     union {
@@ -90,6 +97,58 @@ int round_to_nearest_integer(float x) {
 
     // Perform rounding by adding the last fractional bit to the integer part
     if ((float_value & (1 << (22 - exponent))) != 0) {
+        int_value += 1;
+    }
+
+    // Determine the final sign of the result based on the sign bit
+    if (sign) {
+        int_value = -int_value;
+    }
+
+    return int_value;
+}
+
+int round_to_nearest_integer_half(float x)
+{
+    union {
+        float f;
+        struct IEEE754_half bits;
+    } ieee754;
+    ieee754.f = x;
+
+    int sign = ieee754.bits.sign;
+    int exponent = ieee754.bits.exponent - 15; // Offset of the exponent is 15
+    uint32_t mantissa = ieee754.bits.mantissa | (ieee754.bits.exponent > 0 ? 0x400 : 0);
+
+    if (ieee754.bits.exponent == 0 && ieee754.bits.mantissa  == 0)
+    {
+        return 0;
+    }
+
+    if (ieee754.bits.exponent == 31 && ieee754.bits.mantissa  == 0) 
+    {
+        if (sign) {
+            printf("the input value is too small\n");
+            return INT_MIN; // Negative infinity
+        } else {
+            printf("the input value is too large\n");
+            return INT_MAX; // Positive infinity
+        }
+    }
+    // Perform rounding
+    int int_value; // Integer part (before the decimal point)
+    int float_value; // Fractional part (after the decimal point)
+    if (exponent >= 10) {
+        int_value = mantissa << (exponent - 10);
+        float_value = 0; // No fractional part
+        
+    } else {
+        int_value = mantissa >> (10 - exponent);
+        float_value = mantissa & ((1 << (10 - exponent)) - 1); // Get the fractional part
+    }
+
+    // Perform rounding by adding the last fractional bit to the integer part
+    if ((float_value & (1 << (9 - exponent))) != 0) {
         int_value += 1;
     }
 
