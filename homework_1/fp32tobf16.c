@@ -6,10 +6,17 @@ float fp32_to_bf16(float x)
     int *p = (int *) &y;
     unsigned int exp = *p & 0x7F800000;
     unsigned int man = *p & 0x007FFFFF;
+
     if (exp == 0 && man == 0) /* zero */
-        return x;
+        {
+            printf("exp==0 && man==0\n");
+            return x;
+        }
     if (exp == 0x7F800000) /* infinity or NaN */
-        return x;
+        {
+            printf("exp==255");
+            return x;
+        }
 
     /* Normalized number */
     /* round to nearest */
