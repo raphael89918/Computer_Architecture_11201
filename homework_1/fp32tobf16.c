@@ -25,7 +25,7 @@ float fp32_to_bf16(float x)
     *pr &= 0xFF800000;  /* r has the same exp as x */
     r /= 0x100;
     y = x + r;
-
+    
     *p &= 0xFFFF0000;
 
     return y;
