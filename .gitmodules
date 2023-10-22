@@ -1,3 +1,9 @@
 [submodule "homework_2/Shell-sort-with-FP32-in-BF16-format"]
 	path = homework_2/Shell-sort-with-FP32-in-BF16-format
 	url = https://github.com/TRChen11011/Shell-sort-with-FP32-in-BF16-format.git
+[submodule "homework_2/-main"]
+	path = homework_2/-main
+	url = https://github.com/TRChen11011/Shell-sort-with-FP32-in-BF16-format.git
+[submodule "homework_2/shell-sort-with-fp32-in-bf16-format"]
+	path = homework_2/shell-sort-with-fp32-in-bf16-format
+	url = https://github.com/TRChen11011/Shell-sort-with-FP32-in-BF16-format.git
