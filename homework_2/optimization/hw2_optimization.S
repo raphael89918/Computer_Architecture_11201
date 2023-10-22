@@ -1,4 +1,5 @@
-.data
+.section .data
+
     dataset1: .word 0x3fcccccd    #1.6
     dataset2: .word 0xbfc00000    #-1.5
     dataset3: .word 0x3fb33333    #1.4
@@ -14,7 +15,7 @@
     bf16format: .word 0xFFFF0000
     _EOL: .string "\n"
 
-
+.section .text
 .global main
 
 main:
@@ -42,11 +43,10 @@ main:
 ShellSort:
     lw t0, array_size
     srli t0, t0, 1
-Whileinterval:
     beq t0, zero, Print
     add t1, zero, t0
-Foriarraysize:
     beq t1, s11, Interval_div2
+Foriarraysize:
     add t2, zero, t1
     slli s0, t1, 2
     add s1, sp, s0
@@ -72,10 +72,11 @@ arrayjtotemp:
     add s1, sp, s0
     sw t5, 0(s1)
     addi t1, t1, 1
-    jal Foriarraysize
+    beq t1, s11, Interval_div2
+    j Foriarraysize
 Interval_div2:
     srli t0, t0, 1
-    jal Whileinterval
+    j ShellSort
 
 fp32_to_bf16:
     and s0, a0, t4
@@ -130,8 +131,7 @@ Print:
     li a7, 4
     ecall
     beq t6, s11, End
-    jal Print
+    j Print
 End:
-    # Exit code can be placed here
     li a7, 10
     ecall
