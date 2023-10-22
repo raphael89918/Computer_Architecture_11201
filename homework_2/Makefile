@@ -1,6 +1,6 @@
 .PHONY: clean
 
-include ../../mk/toolchain.mk
+include ~/rv32emu/mk/toolchain.mk
 
 ASFLAGS = -march=rv32i -mabi=ilp32
 LDFLAGS = --oformat=elf32-littleriscv
@@ -8,10 +8,10 @@ LDFLAGS = --oformat=elf32-littleriscv
 %.o: %.S
 	$(CROSS_COMPILE)as -R $(ASFLAGS) -o $@ $<
 
-all: hello.elf
+all: hw2.elf
 
-hello.elf: hello.o
-	 $(CROSS_COMPILE)ld -o $@ -T hello.ld $(LDFLAGS) $<
+hw2.elf: hw2.o
+	 $(CROSS_COMPILE)ld -o $@ -T hw2.ld $(LDFLAGS) $<
 
 clean:
-	$(RM) hello.elf hello.o
+	$(RM) hw2.elf hw2.o
