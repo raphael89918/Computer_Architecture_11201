@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 #define array_size 6
-unsigned int fp32_to_bf16(float x)                 
+unsigned int fp32_to_bf16(float x)
 {
     float y = x;
     int *p = (int *) &y;
@@ -62,13 +63,26 @@ void ShellSort(float array[array_size]){
         interval = interval / 2;
     }
 }
+static inline uint32_t read_cycle(void) {
+        uint32_t cycle;
+            asm volatile ("rdcycle %0" : "=r" (cycle));
+                return cycle;
 
-void main()
+}
+
+int main()
 {
+    uint32_t start_cycle, end_cycle;
+    start_cycle = read_cycle();
     float array[array_size] = {1.6,-1.5,1.4,-1.3,1.2,-1.1};
     ShellSort(array);
     for (int i = 0;i<array_size;i++){
         printf("%x\n",fp32_to_bf16(array[i]));
     }
+    end_cycle = read_cycle();
+    printf("Start Cycle: %u\n", start_cycle);
+    printf("End Cycle: %u\n", end_cycle);
+    printf("Cycles Elapsed: %u\n", end_cycle - start_cycle);
+
     return 0;
 }
