@@ -7,3 +7,6 @@
 [submodule "homework_2/shell-sort-with-fp32-in-bf16-format"]
 	path = homework_2/shell-sort-with-fp32-in-bf16-format
 	url = https://github.com/TRChen11011/Shell-sort-with-FP32-in-BF16-format.git
+[submodule "homework_3/chisel-tutorial"]
+	path = homework_3/chisel-tutorial
+	url = https://github.com/ucb-bar/chisel-tutorial
